@@ -3,7 +3,7 @@ import { data } from '@/data';
 import { Post } from '@/typings';
 import Head from 'next/head';
 
-export const Blog = async () => {
+export default async function Blog() {
   const data = await getData();
   return (
     <>
@@ -23,15 +23,8 @@ export const Blog = async () => {
       </main>
     </>
   );
-};
+}
 
 async function getData() {
   return data;
-  const res = await fetch(`api/v1/blog/posts`, { cache: 'no-store', next: { revalidate: 20 } });
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
-  }
-  return res.json();
 }
-
-export default Blog;
