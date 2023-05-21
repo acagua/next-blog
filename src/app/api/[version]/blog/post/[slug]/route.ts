@@ -14,11 +14,17 @@ export async function GET(
 }
 
 export async function PUT(
-  _request: Request,
+  request: Request,
   { params }: { params: { version: string; slug: string } },
 ) {
   if (params.version === 'v1') {
-    return NextResponse.json({ message: 'Updating ' + params.slug });
+    const { title, preview, content } = await request.json();
+    await sql`UPDATE posts SET 
+    ${title ? 'title=' + title : ''}
+    ${preview ? 'preview=' + preview : ''}
+    ${content ? 'content=' + content : ''}
+     WHERE slug = ${params.slug}`;
+    return NextResponse.json({ message: params.slug + ' updated' });
   }
   return NextResponse.error();
 }
@@ -28,7 +34,8 @@ export async function DELETE(
   { params }: { params: { version: string; slug: string } },
 ) {
   if (params.version === 'v1') {
-    return NextResponse.json({ message: 'Deleting ' + params.slug });
+    await sql`DELETE FROM posts WHERE slug = ${params.slug}`;
+    return NextResponse.json({ message: params.slug + ' Deleted.' });
   }
   return NextResponse.error();
 }

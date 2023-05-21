@@ -1,6 +1,7 @@
 'use client';
 
 import { Post } from '@/typings';
+import { useSession, signIn } from 'next-auth/react';
 import { FormEvent, useState } from 'react';
 
 const initlaState = {
@@ -14,12 +15,19 @@ const initlaState = {
 export default function NewPost() {
   const [requestMessage, setRequestMessage] = useState('');
   const [formData, setFormData] = useState(initlaState);
+  const { data: session } = useSession();
 
   const handleOnChange = (e: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.currentTarget;
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleSignIn = () => {
+    signIn();
+  };
+  if (session) {
+    console.log({ session });
+  }
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
@@ -45,6 +53,7 @@ export default function NewPost() {
 
   return (
     <section className="w-full">
+      <button onClick={handleSignIn}> Sign In</button>
       <h2 className="p-2 text-center text-2xl"> Create new Post:</h2>
       <form onSubmit={handleSubmit} className="flex grow flex-col">
         <label htmlFor="title" className="p-2 text-xl">

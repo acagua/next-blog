@@ -4,8 +4,12 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: Request, { params }: { params: { version: string } }) {
   if (params.version === 'v1') {
-    const { rows } = await sql`SELECT * FROM posts`;
-    return NextResponse.json({ posts: rows });
+    try {
+      const { rows } = await sql`SELECT * FROM posts`;
+      return NextResponse.json({ posts: rows });
+    } catch (error) {
+      return NextResponse.json({ posts: [] });
+    }
   }
   return NextResponse.error();
 }

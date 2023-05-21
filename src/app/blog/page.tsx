@@ -1,13 +1,15 @@
+'use client';
 import NewPost from '@/components/NewPost';
 import { PostPreview } from '@/components/PostPreview';
 import { Post } from '@/typings';
 import Head from 'next/head';
+import { SessionProvider } from 'next-auth/react';
 
 export default async function Blog() {
   const databaseData = await getBlogPosts();
   const posts = databaseData.posts;
   return (
-    <>
+    <SessionProvider>
       <Head>
         <title>My Blog</title>
       </Head>
@@ -23,7 +25,7 @@ export default async function Blog() {
         </ul>
         <NewPost />
       </main>
-    </>
+    </SessionProvider>
   );
 }
 
