@@ -1,10 +1,11 @@
+import NewPost from '@/components/NewPost';
 import { PostPreview } from '@/components/PostPreview';
-import { data } from '@/data';
 import { Post } from '@/typings';
 import Head from 'next/head';
 
 export default async function Blog() {
-  const data = await getData();
+  const databaseData = await getBlogPosts();
+  const posts = databaseData.posts;
   return (
     <>
       <Head>
@@ -14,17 +15,20 @@ export default async function Blog() {
         <h1 className="text-center text-5xl font-bold">Blog Exercise</h1>
 
         <ul className="p-5">
-          {data.posts.map((post: Post) => (
+          {posts.map((post: Post) => (
             <li key={post.id}>
               <PostPreview data={post} />
             </li>
           ))}
         </ul>
+        <NewPost existingPosts={posts} />
       </main>
     </>
   );
 }
 
-async function getData() {
-  return data;
+async function getBlogPosts() {
+  const res = await fetch('http://localhost:3000/api/v1/blog/posts', { cache: 'no-store' });
+  const databaseRecords = await res.json();
+  return databaseRecords;
 }
