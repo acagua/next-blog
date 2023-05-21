@@ -1,3 +1,4 @@
+import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
 
 export async function GET(
@@ -5,7 +6,9 @@ export async function GET(
   { params }: { params: { version: string; slug: string } },
 ) {
   if (params.version === 'v1') {
-    return NextResponse.json({ message: 'Getting ' + params.slug });
+    const { rows } =
+      await sql`SELECT * FROM posts as p JOIN users as u on p.user_id = u.id  WHERE slug = ${params.slug}`;
+    return NextResponse.json({ post: rows });
   }
   return NextResponse.error();
 }

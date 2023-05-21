@@ -21,14 +21,14 @@ export default async function Blog() {
             </li>
           ))}
         </ul>
-        <NewPost existingPosts={posts} />
+        <NewPost />
       </main>
     </>
   );
 }
 
 async function getBlogPosts() {
-  const res = await fetch('http://localhost:3000/api/v1/blog/posts', { cache: 'no-store' });
+  const res = await fetch('http://localhost:3000/api/v1/blog/post', { cache: 'no-store' });
   const databaseRecords = await res.json();
   return databaseRecords;
 }

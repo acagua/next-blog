@@ -11,5 +11,5 @@ export type Post = {
 export type Comment = {
   id: string;
   content: string;
-  author: string;
+  email: string;
 };

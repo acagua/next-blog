@@ -11,7 +11,7 @@ const initlaState = {
   content: '',
 };
 
-export default function NewPost({ existingPosts }: { existingPosts: Post[] }) {
+export default function NewPost() {
   const [requestMessage, setRequestMessage] = useState('');
   const [formData, setFormData] = useState(initlaState);
 
@@ -23,7 +23,7 @@ export default function NewPost({ existingPosts }: { existingPosts: Post[] }) {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/api/v1/blog/posts', {
+      const response = await fetch('http://localhost:3000/api/v1/blog/post', {
         method: 'POST',
         cache: 'no-store',
         body: JSON.stringify(formData),
