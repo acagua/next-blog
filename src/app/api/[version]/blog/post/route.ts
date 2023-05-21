@@ -20,9 +20,7 @@ export async function POST(request: NextRequest, { params }: { params: { version
       return NextResponse.json({ created: true }, { status: 201 });
     } catch (error) {
       if (error instanceof Error) {
-        console.log({ error });
-        const errorMessage = error.code === '23505' ? 'Sorry, slug already exist' : error.message;
-        return NextResponse.json({ name: error.name, message: errorMessage }, { status: 400 });
+        return NextResponse.json({ name: error.name, message: error.message }, { status: 400 });
       }
     }
   }
